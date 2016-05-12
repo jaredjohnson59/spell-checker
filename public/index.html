@@ -1,0 +1,59 @@
+<!DOCTYPE>
+<html ng-app="myApp">
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<title>Speller Checker</title>
+</head>
+<body>
+<div class="container" ng-controller="AppCtrl">
+<h1>Spell Checker</h1>
+<!--<input class="form-control" ng-model="word.name">
+<button class="btn btn-info" ng-click="testWords()">Test</button>
+
+<h2>Suggestions</h2>
+<div ng-repeat="suggestion in suggestionlist">
+<p>{{suggestion.word}} </p>
+</div>
+
+<div>
+<h2>Get Database Info</h2>
+<input class="form-control" ng-model="word.site">
+<button class="btn btn-info" ng-click="getWords(word.site)">Get Words</button>
+<p ng-model="suggestions">{{suggestions}} </p>-->
+
+
+<table class="table">
+<thead>
+<tr>
+<!--<th>Database ID</th>-->
+<th>Page Name</th>
+<th>Page ID</th>
+<th>Site ID</th>
+<!--<th>HTML</th>-->
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="page in pagelist" ng-click="returnSuggestions(page._id)" class="page">
+<td>{{page.pageTitle}}</td>
+<td><a ng-href="site.html?pageID={{page._id}}&pageName={{page.pageTitle}}">{{page._id}} </a></td>
+<td>{{page.siteId}}  </td>
+<!--<td>{{page.html}}  </td>-->
+</tr>
+
+</tbody>
+</table>
+
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="controllers/controller.js"></script>
+</body>
+</html>

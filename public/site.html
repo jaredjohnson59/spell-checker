@@ -1,0 +1,66 @@
+<html ng-app="myApp">
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<title>Site Information</title>
+<script>
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+ var pageid = getParameterByName('pageID'); // "lorem")
+ var pageTitle = getParameterByName('pageName');
+
+</script>
+
+</head>
+<body>
+  <div class="container" ng-controller="AppCtrl">
+<h1 ng-init="getPageName()" ng-model="pagename">{{pagename}}</h1>
+<h2>Select Dictionary</h2>
+<div class="dropdown">
+  <select class="ui fluid dropdown" ng-model="data.singleSelect" ng-change="selectedItemChanged()">
+          <option default value="en_US">English (American)</option>
+          <option value="en_GB">English (British)</option>
+          <option value="en_CA">English (Canadian)</option>
+          <option value="es_ANY">Spanish</option>
+          <option value="fr">French</option>
+        </select>
+        <h4>Current Dictionary: {{currentDictionary}}</h4>
+
+</div>
+<h3>Amount of spelling mistakes: {{numOfMistakes}}</h3>
+<div class="suggestions" ng-init="getMistakes(pageid)")>
+<h2>Suggestions</h2>
+<table class="table">
+  <thead>
+    <th>Spelling Mistake</th>
+  <!--  <th>Suggestions</th> -->
+    <th> </th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="suggest in suggestlist" >
+      <td>{{suggest.word}} </td>
+      <!--<td>{{suggest.suggestions}} </td>-->
+      <td><button class="btn btn-primary" ng-click="addWord(suggest.word)">Add Word</button></td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="controllers/siteinfocontroller.js"></script>
+</html>
