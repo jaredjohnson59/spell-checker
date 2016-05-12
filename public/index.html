@@ -36,6 +36,7 @@
 <th>Page Name</th>
 <th>Page ID</th>
 <th>Site ID</th>
+<th>Number of Spelling Mistakes</th>
 <!--<th>HTML</th>-->
 </tr>
 </thead>
@@ -44,6 +45,7 @@
 <td>{{page.pageTitle}}</td>
 <td><a ng-href="site.html?pageID={{page._id}}&pageName={{page.pageTitle}}">{{page._id}} </a></td>
 <td>{{page.siteId}}  </td>
+<td>{{page.numOfMistakes}} </td>
 <!--<td>{{page.html}}  </td>-->
 </tr>
 
