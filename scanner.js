@@ -10,11 +10,11 @@ async = require("async");
 var mongojs = require('mongojs');
 
 //Set mongojs based on user input
-var db = mongojs(myArgs.x, [myArgs.y]);
+var db = mongojs(myArgs.b, [myArgs.c]);
 //Get parameters from command line
 
 console.log('Dictionary ', myArgs.a);
-console.log('Site ID: ', myArgs.z);
+console.log('Site ID: ', myArgs.d);
 //console.log('Site ID: ', myArgs.y);
 
 //Dictionary is set to US
@@ -24,10 +24,12 @@ var hunspell = new nodehun(affbuf, dictbuf);
 var bodyParser = require('body-parser');
 var spellcheck = require('nodehun-sentences');
 var docs;
+var collection = db.collection(myArgs.c);
+
 
 app.use(bodyParser.json());
 
-db.sites.find({siteId: myArgs.z}, function (err, doc){
+collection.find({siteId: myArgs.d}, function (err, doc){
 
 doc.forEach(function(item){
 
@@ -37,7 +39,7 @@ doc.forEach(function(item){
 
     console.log(typos.length);
 
-db.sites.findAndModify({
+collection.findAndModify({
 	query: {_id: mongojs.ObjectId(item._id)},
 	update: { $set: { numOfMistakes: typos.length } },
 	new: true
@@ -47,7 +49,7 @@ db.sites.findAndModify({
   console.log("Page has: " + doc.numOfMistakes + " mistakes");
 });
 
-db.sites.findAndModify({
+collection.findAndModify({
 	query: {_id: mongojs.ObjectId(item._id)},
 	update: { $set: { currentDictionary: myArgs.a } },
 	new: true
@@ -57,7 +59,7 @@ db.sites.findAndModify({
   console.log("Page dictionary is: " + doc.currentDictionary);
 });
 
-db.sites.findAndModify({
+collection.findAndModify({
 	query: {_id: mongojs.ObjectId(item._id)},
 	update: { $set: { spellingMistakes: typos } },
 	new: true
