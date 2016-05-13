@@ -25,7 +25,7 @@ function($scope,$http,$window)
     $scope.currentDictionary = response;
   });
 
-  
+
   $http.get('/spell-checker/getMistakes/' + $window.pageid).success(function(response){
     console.log(response.length);
     $scope.suggestlist = response;
@@ -66,7 +66,7 @@ $scope.testWords = function(){
  };
 
  $scope.addWord = function(word){
-   console.log(word);
+   console.log("start");
    $http.post('/spell-checker/addword/' + word).success(function(response)
    {
      console.log(response);
