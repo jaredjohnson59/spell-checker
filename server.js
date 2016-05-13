@@ -18,7 +18,7 @@ var hunspell = new nodehun(affbuf, dictbuf);
 var bodyParser = require('body-parser');
 var spellcheck = require('nodehun-sentences');
 
-
+var collection = db.collection("sites");
 
 //Set Default Dictionary Code
 var dictCode = "en_US";
@@ -40,17 +40,39 @@ app.post('/spell-checker/addword/:word', function (req, res){
 
 });
 
-app.post('/spell-checker/setdict/', function (req, res){
-  affbuf = fs.readFileSync(__dirname+'/dictionaries/en_US.aff');
-  dictbuf = fs.readFileSync(__dirname+'/dictionaries/en_US.dic');
+app.post('/spell-checker/setdict/:id', function (req, res){
 
-  res.json(dictCode);
+  var pageID = req.params.id;
+
+  console.log("Page ID:" + pageID);
+
+      collection.findOne({_id: mongojs.ObjectId(pageID)}, function (err, doc){
+
+      affbuf = fs.readFileSync(__dirname+'/dictionaries/' + doc.currentDictionary + '.aff');
+      dictbuf = fs.readFileSync(__dirname+'/dictionaries/' + doc.currentDictionary + '.dic');
+
+      res.json(doc.currentDictionary);
+    });
 });
 
 
-app.post('/spell-checker/changedict/', function (req, res){
-	console.log(req.body.singleSelect);
+app.post('/spell-checker/changedict/:id', function (req, res){
+	//console.log(req.body.id);
 	dictCode = req.body.singleSelect;
+
+  var pageID = req.params.id;
+
+  console.log("Page ID:" + pageID);
+
+  collection.findAndModify({
+  	query: {_id: mongojs.ObjectId(pageID)},
+  	update: { $set: { currentDictionary: dictCode } },
+  	new: true
+  }, function (err, doc, lastErrorObject) {
+  	// doc.tag === 'maintainer'
+    console.log(doc._id)
+    console.log("Page dictionary is: " + doc.currentDictionary);
+  });
 
 //Set the dictionary (default is US)
 affbuf = fs.readFileSync(__dirname+'/dictionaries/'+dictCode+'.dic');
@@ -103,6 +125,7 @@ app.get('/spell-checker/', function (req, res)
 
 app.get('/spell-checker/:id', function  (req, res)
 {
+  console.log("Running refresh");
 	//send page ID, site ID and crawlID
 	//console.log(db)
 	var id = req.params.id;
@@ -110,20 +133,37 @@ app.get('/spell-checker/:id', function  (req, res)
   //hunspell.addDictionary(ignore);
 	console.log(id);
 
-	//Find All Pages with Site ID
 	db.sites.findOne({_id: mongojs.ObjectId(id)}, function (err, doc){
 	//Return Response
 	console.log("Document: " + doc);
 	var html = htmlToText.fromString(doc.html, {	wordwrap: 130});
 	console.log(html);
 
-  affbuf = fs.readFileSync(__dirname+'/dictionaries/'+dictCode+'.dic');
-  dictbuf = fs.readFileSync(__dirname+'/dictionaries/'+dictCode+'.dic');
+  affbuf = fs.readFileSync(__dirname+'/dictionaries/'+doc.currentDictionary+'.dic');
+  dictbuf = fs.readFileSync(__dirname+'/dictionaries/'+doc.currentDictionary+'.dic');
   hunspell = new nodehun(affbuf, dictbuf);
 
 	spellcheck(hunspell, html, function(err, typos) {
-		console.log(typos);
+//		console.log(typos);
+  collection.findAndModify({
+    query: {_id: mongojs.ObjectId(id)},
+    update: { $set: { numOfMistakes: typos.length } },
+    new: true
+  }, function (err, doc, lastErrorObject) {
+    // doc.tag === 'maintainer'
+    console.log(doc._id)
+    console.log("Page has: " + doc.numOfMistakes + " mistakes");
+  });
 
+  collection.findAndModify({
+  	query: {_id: mongojs.ObjectId(id)},
+  	update: { $set: { spellingMistakes: typos } },
+  	new: true
+  }, function (err, doc, lastErrorObject) {
+  	// doc.tag === 'maintainer'
+    //console.log(doc._id)
+    console.log("Spelling Mistakes are: " + doc.spellingMistakes);
+  });
 
 		res.json(typos);
 });

@@ -3,11 +3,14 @@ var myApp = angular.module('myApp', []);
 myApp.controller('AppCtrl', ['$scope', '$http','$window',
 function($scope,$http,$window)
 {
-	//console.log("Hello World from controller");
+
+  //set the page ID for the page
   var pageID = $window.pageid;
+  //set the page name for the page
   var pageName = $window.pageTitle;
 
 
+ //Method that refreshes database and page information
   var refresh = function(){
 	$http.get('/spell-checker/' + pageID).success(
 	function(response)
@@ -17,11 +20,12 @@ function($scope,$http,$window)
 	});
 };
 
-  $http.post('/spell-checker/setdict/').success(function(response){
-    console.log(response);
+  //Sets the dictionary for the page
+  $http.post('/spell-checker/setdict/' + pageID).success(function(response){
     $scope.currentDictionary = response;
   });
 
+  
   $http.get('/spell-checker/getMistakes/' + $window.pageid).success(function(response){
     console.log(response.length);
     $scope.suggestlist = response;
@@ -54,7 +58,7 @@ $scope.testWords = function(){
 	$scope.selectedItemChanged = function(){
 	 console.log("changed");
 
-	 $http.post('/spell-checker/changedict/', $scope.data);
+	 $http.post('/spell-checker/changedict/' + pageID, $scope.data);
    $scope.currentDictionary = $scope.data.singleSelect;
 	 console.log($scope.data.singleSelect);
 	 refresh();
