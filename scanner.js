@@ -31,7 +31,7 @@ var collection = db.collection(myArgs.c);
 
 app.use(bodyParser.json());
 
-collection.find({"siteId" : "2"}, function (err, doc){
+collection.find({"siteId" : myArgs.d}, function (err, doc){
 
 
 doc.forEach(function(item){
