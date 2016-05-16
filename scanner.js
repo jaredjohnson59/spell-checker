@@ -15,6 +15,8 @@ var db = mongojs(myArgs.b, [myArgs.c]);
 
 console.log('Dictionary ', myArgs.a);
 console.log('Site ID: ', myArgs.d);
+console.log('Mongo Collection:', myArgs.c);
+console.log('Mongo Database Name:', myArgs.b);
 //console.log('Site ID: ', myArgs.y);
 
 //Dictionary is set to US
@@ -29,7 +31,8 @@ var collection = db.collection(myArgs.c);
 
 app.use(bodyParser.json());
 
-collection.find({siteId: myArgs.d}, function (err, doc){
+collection.find({"siteId" : "2"}, function (err, doc){
+
 
 doc.forEach(function(item){
 

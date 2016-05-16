@@ -2,13 +2,15 @@ To run spell checker scanner go to the cmd, go to Spell Checker folder (in the c
 
 node scanner -a {dictionary code} -b {mongodb database name} -c {mongodb collection name} -d {siteid}
 
+NOTE:Brackets are not needed.
+
 Example:
-node scanner -a en_US -b spell-checker -c sites -d 1
+node scanner -a en_US -b spell-checker -c sites -d "1"
  
 a- = dictionary code
 b- = mongodb name
 c- = mongodb collection name
-d- = siteid
+d- = siteid (must be in " ")
 
 Once the scanner has been run go to the cmd, go to Spell Checker folder (in the cmd) and enter following:
 
