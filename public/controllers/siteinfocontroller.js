@@ -15,22 +15,29 @@ function($scope,$http,$window)
 	$http.get('/spell-checker/' + pageID).success(
 	function(response)
 	{
-		$scope.suggestlist = response;
-    $scope.numOfMistakes = response.length;
+    console.log("Returned response", response);
+		$scope.suggestlist = response.spellingMistakes;
+    $scope.numOfMistakes = response.numOfMistakes;
 	});
 };
 
   //Sets the dictionary for the page
   $http.post('/spell-checker/setdict/' + pageID).success(function(response){
-    $scope.currentDictionary = response;
+    $scope.currentDictionary = response.currentDictionary;
   });
 
-
+ //Return the mistakes for the page
   $http.get('/spell-checker/getMistakes/' + $window.pageid).success(function(response){
-    console.log(response.length);
-    $scope.suggestlist = response;
+
+    //Set values from database on page
+    $scope.suggestlist = response.spellingMistakes;
     $scope.pagename = pageName;
-    $scope.numOfMistakes = response.length;
+    $scope.numOfMistakes = response.numOfMistakes;
+    $scope.currentDictionary = response.currentDictionary;
+
+    //Print Results
+    console.log("Number of Mistakes:", response.numOfMistakes);
+    console.log("Mistakes:", response.spellingMistakes);
   });
 
 $scope.testWords = function(){
@@ -45,13 +52,14 @@ $scope.testWords = function(){
 		}
 	)};
 
+  //Return words with spelling mistakes
 	$scope.returnSuggestions = function(id){
-	//	console.log(dataid);
-  pageID = id;
+  pageID = id; //Set pageID
   console.log(pageID);
 		$http.get('/spell-checker/' + id).success(function(response){
 			console.log(response);
-			$scope.suggestlist = response;
+      //Set spelling mistakes
+			$scope.suggestlist = doc.spellingMistakes;
 		});
 	};
 

@@ -17,24 +17,10 @@ function($scope,$http)
 	});
 };
 
-
 	$http.get('/spell-checker/').success(function(response){
 		console.log(response);
 		$scope.pagelist = response;
 	});
-
-
-$scope.testWords = function(){
-		console.log($scope.word);
-
-		$http.post('/spell-checker', $scope.word).success(function(response)
-		{
-			console.log(response);
-
-			$scope.suggestionlist = response;
-
-		}
-	)};
 
 	$scope.returnSuggestions = function(id){
 	//	console.log(dataid);
@@ -45,35 +31,4 @@ $scope.testWords = function(){
 			$scope.suggestlist = response;
 		});
 	};
-
-	$scope.selectedItemChanged = function(){
-	 console.log("changed");
-
-	 $http.post('/spell-checker/changedict/', $scope.data);
-
-	 console.log($scope.data.singleSelect);
-	 refresh();
-
- };
-
- $scope.addWord = function(word){
-   console.log(word);
-   $http.post('/spell-checker/addword/' + word).success(function(response)
-   {
-     console.log(response);
-   });
-
-   refresh();
-
- };
-
-
-	$scope.getWords = function(id){
-		console.log(id);
-		$http.get('/spell-checker/' + id).success(function(response){
-			console.log(response);
-			$scope.pagelist = response;
-		});
-	};
-
 }]);
