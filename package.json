@@ -1,0 +1,33 @@
+{
+  "name": "spell-checker",
+  "version": "1.0.0",
+  "description": "Spell Checker for HTML webpages",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaredjohnson59/spell-checker.git"
+  },
+  "author": "Jared Johnson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaredjohnson59/spell-checker/issues"
+  },
+  "homepage": "https://github.com/jaredjohnson59/spell-checker#readme",
+  "devDependencies": {
+    "grunt-browser-sync": "^2.2.0"
+  },
+  "dependencies": {
+    "async": "^1.5.2",
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "fs": "0.0.2",
+    "mongojs": "^2.4.0",
+    "nodehun": "^2.0.10",
+    "nodehun-sentences": "^1.0.1",
+    "sanitize-html": "^1.11.4"
+  }
+}

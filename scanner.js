@@ -10,7 +10,8 @@ async = require("async");
 var mongojs = require('mongojs');
 
 //Set mongojs based on user input
-var db = mongojs(myArgs.b, [myArgs.c]);
+var dbConfig = require('./config');
+var db = mongojs(dbConfig.database, [dbConfig.collection]);
 //Get parameters from command line
 
 console.log('Dictionary ', myArgs.a);
@@ -28,7 +29,7 @@ var hunspell = new nodehun(affbuf, dictbuf);
 var bodyParser = require('body-parser');
 var spellcheck = require('nodehun-sentences');
 var docs;
-var collection = db.collection(myArgs.c);
+var collection = db.collection(dbConfig.collection);
 var siteID = myArgs.d;
 var crawlID = myArgs.e;
 
@@ -58,7 +59,7 @@ collection.findAndModify({
 	new: true
 }, function (err, doc, lastErrorObject) {
 	// doc.tag === 'maintainer'
-  console.log(doc._id)
+  console.log(doc._id);
   console.log("Page has: " + doc.numOfMistakes + " mistakes");
 });
 
@@ -68,7 +69,6 @@ collection.findAndModify({
 	new: true
 }, function (err, doc, lastErrorObject) {
 	// doc.tag === 'maintainer'
-  //console.log(doc._id)
   console.log("Page dictionary is: " + doc.currentDictionary);
 });
 

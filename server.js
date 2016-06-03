@@ -6,7 +6,8 @@ var fs = require('fs');
 var sanitizeHtml = require('sanitize-html');
 async = require("async");
 var mongojs = require('mongojs');
-var db = mongojs('test-spellchecker', ['info']);
+var dbConfig = require('./config');
+var db = mongojs(dbConfig.database, [dbConfig.collection]);
 var bodyParser = require('body-parser');
 var spellcheck = require('nodehun-sentences');
 
@@ -16,10 +17,8 @@ var dictbuf;
 //Set up dictionary
 var hunspell;
 
-
-
 //Set database collection (change the collection based on the mongodb collection)
-var collection = db.collection("info");
+var collection = db.collection(dbConfig.collection);
 var dictCode;
 var ignoreDict = "ignore";
 var ignore = fs.readFileSync(__dirname+'/dictionaries/' + ignoreDict + '.dic');
